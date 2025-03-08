@@ -3,57 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Mensagens</title>
+    <title>Mensagens de Desabafo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
-        table {
+        .container {
             width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        th, td {
-            border: 1px solid black;
-            padding: 10px;
+        h1 {
+            text-align: center;
+            color: #333;
         }
-        th {
-            background-color: #f2f2f2;
+        .mensagem {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .mensagem:last-child {
+            border-bottom: none;
+        }
+        .mensagem strong {
+            color: #555;
         }
     </style>
 </head>
 <body>
-    <h2>Histórico de Mensagens</h2>
-    <table id="tabela">
-        <thead>
-            <tr>
-                <th>ID Usuário</th>
-                <th>Nome</th>
-                <th>Mensagem</th>
-                <th>Data</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-
-    <script>
-        fetch("/historico")
-            .then(response => response.json())
-            .then(data => {
-                const tabela = document.querySelector("#tabela tbody");
-                data.forEach(mensagem => {
-                    const linha = document.createElement("tr");
-                    linha.innerHTML = `<td>${mensagem.usuario_id}</td>
-                                       <td>${mensagem.nome}</td>
-                                       <td>${mensagem.mensagem}</td>
-                                       <td>${mensagem.data}</td>`;
-                    tabela.appendChild(linha);
-                });
-            })
-            .catch(error => console.error("Erro ao carregar os dados:", error));
-    </script>
+    <div class="container">
+        <h1>Mensagens de Desabafo</h1>
+        {% if mensagens %}
+            {% for mensagem in mensagens %}
+                <div class="mensagem">
+                    <strong>Usuário ID:</strong> {{ mensagem.usuario_id }}<br>
+                    <strong>Nome:</strong> {{ mensagem.nome }}<br>
+                    <strong>Mensagem:</strong> {{ mensagem.mensagem }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Nenhuma mensagem de desabafo encontrada.</p>
+        {% endif %}
+    </div>
 </body>
 </html>
