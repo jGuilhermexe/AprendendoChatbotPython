@@ -4,31 +4,30 @@ import telebot
 import threading
 import time
 
-# Configurações do Flask
 app = Flask(__name__)
 
-# Configurações do bot do Telegram
+
 CHAVE_API = "7710595076:AAFG6mQk6dRU5N-PVN5HIBSdDaM4imgwnes"
 bot = telebot.TeleBot(CHAVE_API)
 
-# Dicionário para armazenar o estado de desabafo dos usuários
+
 usuarios_desabafo = {}
 
-# Função para conectar ao banco de dados
+
 def conectar_bd():
     client = MongoClient("mongodb://localhost:27017/")
     db = client["ChatbotTelegram"]
     return db
 
-# Rota do Flask para exibir as mensagens de desabafo
+
 @app.route('/')
 def index():
     db = conectar_bd()
     colecao = db["mensagens"]
-    mensagens = list(colecao.find({}, {"_id": 0}))  # Exclui o campo _id da resposta
+    mensagens = list(colecao.find({}, {"_id": 0})) 
     return render_template('index.html', mensagens=mensagens)
 
-# Handlers do bot do Telegram
+
 @bot.message_handler(commands=["PrincipaisLinks"])
 def PrincipaisLinks(mensagem):
     texto = """
